@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build / output
+dist/
+build/
+coverage/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# PM2 / nodemon / misc
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Optional: test / cache
+.cache/
+.nyc_output/
