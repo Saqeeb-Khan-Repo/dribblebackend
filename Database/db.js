@@ -10,6 +10,14 @@ const MongoConnect = async () => {
     if (!uri) {
       throw new Error("MONGO_URL is not defined");
     }
+    console.log(
+      "MONGO_URI starts with:",
+      typeof process.env.MONGO_DB === "string"
+        ? process.env.MONGO_DB.substring(0, 50) + "..."
+        : process.env.MONGO_DB,
+    );
+    console.log("Full length:", process.env.MONGO_DB?.length || "undefined");
+
     await mongoose.connect(uri);
     console.log("MongoDB connected");
   } catch (err) {
