@@ -6,7 +6,7 @@ const MongoConnect = require("./Database/db");
 const router = require("./routes/auth"); // Has /login?
 require("dotenv").config();
 const homeRoutes = require("./routes/home");
-const adminRoutes = require("./routes/admin");
+const adminRoutes = require("./routes/admin"); 
 
 const frontend_URI = "https://dribbleclone-1fi7.onrender.com";
 
