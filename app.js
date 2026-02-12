@@ -13,20 +13,15 @@ app.get("/", (req, res) => {
   res.json({ message: "Your backend is live" });
 });
 
-//cors
-const allowedOrigins = [
-  "http://localhost:5173", // Vite dev
-  "http://127.0.0.1:5173", // Alternative local
-  "https://dribbleclone-1fi7.onrender.com", // Prod frontend
-];
-
+// ✅ FIXED CORS for Vite
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow no origin (mobile/direct) or exact frontend
+      if (!origin || origin === "https://dribbleclone-1fi7.onrender.com") {
         callback(null, true);
       } else {
-        callback(new Error("CORS origin not allowed"));
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
