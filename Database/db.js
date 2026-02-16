@@ -6,7 +6,7 @@ let cachedConnection = null;
 const MongoConnect = async () => {
   if (cachedConnection) return cachedConnection;
 
-  const uri = process.env.MONGO_URI; // set this in Vercel
+  const uri = process.env.MONGO_URI; 
 
   if (!uri) {
     throw new Error("MONGO_URI is not defined");
