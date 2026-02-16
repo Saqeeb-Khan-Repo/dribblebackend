@@ -13,8 +13,8 @@ const MongoConnect = async () => {
   }
 
   try {
-    console.log("MONGO_URI starts with:", uri.substring(0, 50) + "...");
-    console.log("Full length:", uri.length);
+    // console.log("MONGO_URI starts with:", uri.substring(0, 50) + "...");
+    // console.log("Full length:", uri.length);
 
     const conn = await mongoose.connect(uri);
     cachedConnection = conn;
