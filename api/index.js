@@ -8,20 +8,10 @@ require("dotenv").config();
 
 const app = express();
 
+// CORS: allow all origins
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (
-        !origin ||
-        origin === "https://dribbleclone-1fi7.onrender.com" ||
-        origin === "http://localhost:5175"
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
@@ -60,5 +50,4 @@ app.use("/api", router);
 app.use("/api/home", homeRoutes);
 app.use("/api/admin", adminRoutes);
 
-// IMPORTANT: no app.listen
 module.exports = app;
