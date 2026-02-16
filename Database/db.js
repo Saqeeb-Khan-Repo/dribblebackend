@@ -1,27 +1,35 @@
+// Database/db.js
 const mongoose = require("mongoose");
 
-const uri =
-  process.env.NODE_ENV === "production"
-    ? process.env.MONGO_DB // Atlas on Render
-    : "mongodb+srv://khansaqeeb332_db_user:KrGPyEDLGxJBySSs@cluster1.xnkbbvy.mongodb.net/"; // local dev
+let cachedConnection = null;
 
 const MongoConnect = async () => {
+  if (cachedConnection) {
+    return cachedConnection;
+  }
+
+  const uri =
+    process.env.MONGO_URI || // use this on Vercel + local
+    "mongodb://127.0.0.1:27017/dribble"; // fallback for local dev if needed
+
+  if (!uri) {
+    throw new Error("MONGO_URI is not defined");
+  }
+
   try {
-    if (!uri) {
-      throw new Error("MONGO_URL is not defined");
-    }
     console.log(
       "MONGO_URI starts with:",
-      typeof process.env.MONGO_DB === "string"
-        ? process.env.MONGO_DB.substring(0, 50) + "..."
-        : process.env.MONGO_DB,
+      typeof uri === "string" ? uri.substring(0, 50) + "..." : uri,
     );
-    console.log("Full length:", process.env.MONGO_DB?.length || "undefined");
+    console.log("Full length:", uri.length);
 
-    await mongoose.connect(uri);
+    const conn = await mongoose.connect(uri);
+    cachedConnection = conn;
     console.log("MongoDB connected");
+    return conn;
   } catch (err) {
     console.error("MongoDB FAILED:", err);
+    cachedConnection = null;
     throw err;
   }
 };

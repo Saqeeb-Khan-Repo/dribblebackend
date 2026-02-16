@@ -1,4 +1,3 @@
-// api/index.js
 const express = require("express");
 const cors = require("cors");
 const MongoConnect = require("../Database/db");
@@ -9,14 +8,13 @@ require("dotenv").config();
 
 const app = express();
 
-// CORS
 app.use(
   cors({
     origin: (origin, callback) => {
       if (
         !origin ||
         origin === "https://dribbleclone-1fi7.onrender.com" ||
-        origin === "http://localhost:5175" // note: just origin, no hash/path
+        origin === "http://localhost:5175"
       ) {
         callback(null, true);
       } else {
@@ -31,40 +29,36 @@ app.use(
 
 app.use(express.json());
 
-// test route
-app.get("/", (req, res) => {
-  res.json({ message: "Your backend is live on Vercel" });
-});
-
-// Routes (unique prefixes)
-app.use("/api", router); // e.g. POST /api/auth/login
-app.use("/api/home", homeRoutes);
-app.use("/api/admin", adminRoutes);
-
-// connect DB once per cold start
+// connect DB once per cold start, before any route handler
 let dbPromise = null;
 const ensureDB = async () => {
   if (!dbPromise) {
-    dbPromise = MongoConnect()
-      .then(() => console.log("MongoDB connected (Vercel)"))
-      .catch((err) => {
-        console.error("MongoDB connection error", err);
-        dbPromise = null;
-        throw err;
-      });
+    dbPromise = MongoConnect();
   }
   return dbPromise;
 };
 
-// ensure we initialize DB on first request
 app.use(async (req, res, next) => {
   try {
     await ensureDB();
     next();
   } catch (err) {
-    res.status(500).json({ message: "Database connection failed" });
+    console.error("DB ensure error:", err);
+    res
+      .status(500)
+      .json({ success: false, message: "Database connection failed" });
   }
 });
 
-// IMPORTANT: no app.listen – export app instead
+// test route
+app.get("/", (req, res) => {
+  res.json({ message: "Backend on Vercel is running" });
+});
+
+// routes
+app.use("/api", router);
+app.use("/api/home", homeRoutes);
+app.use("/api/admin", adminRoutes);
+
+// IMPORTANT: no app.listen
 module.exports = app;
