@@ -18,7 +18,11 @@ app.use(
   cors({
     origin: (origin, callback) => {
       // Allow no origin (mobile/direct) or exact frontend
-      if (!origin || origin === "https://dribbleclone-1fi7.onrender.com") {
+      if (
+        !origin ||
+        origin === "https://dribbleclone-1fi7.onrender.com" ||
+        "http://localhost:5175/dribbleclone#/"
+      ) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
