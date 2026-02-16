@@ -4,23 +4,16 @@ const mongoose = require("mongoose");
 let cachedConnection = null;
 
 const MongoConnect = async () => {
-  if (cachedConnection) {
-    return cachedConnection;
-  }
+  if (cachedConnection) return cachedConnection;
 
-  const uri =
-    process.env.MONGO_URI || // use this on Vercel + local
-    "mongodb://127.0.0.1:27017/dribble"; // fallback for local dev if needed
+  const uri = process.env.MONGO_URI; // set this in Vercel
 
   if (!uri) {
     throw new Error("MONGO_URI is not defined");
   }
 
   try {
-    console.log(
-      "MONGO_URI starts with:",
-      typeof uri === "string" ? uri.substring(0, 50) + "..." : uri,
-    );
+    console.log("MONGO_URI starts with:", uri.substring(0, 50) + "...");
     console.log("Full length:", uri.length);
 
     const conn = await mongoose.connect(uri);
